@@ -24,4 +24,8 @@ provider "aws" {
 # TODO: detector     - aws_lambda_function (SQS trigger)
 # TODO: state        - aws_dynamodb_table (meetings, events)
 # TODO: secrets      - aws_secretsmanager_secret (bot vendor + LLM keys)
+# TODO: drafter      - aws_lambda_function (question event -> retrieve -> Bedrock draft)
+# TODO: search index - aws_bedrockagent_knowledge_base or aws_opensearchserverless_collection
+# TODO: ingestion    - aws_lambda_function + aws_scheduler_schedule (Confluence / Jira / SharePoint sync)
+# TODO: audit log    - aws_dynamodb_table (approved posts: text, sources, user, timestamp)
 # TODO: push         - aws_sns_platform_application (FCM / APNs)

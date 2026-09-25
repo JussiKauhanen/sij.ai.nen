@@ -2,5 +2,10 @@
 
 Mobile app or PWA (progressive web app).
 
-Screens: live meeting list, "needs you" card with context, reply composer with suggested answer, post-meeting summary.
+Screens:
+- **Live meetings:** which meetings your stand-in is in right now.
+- **Needs you:** the question, the draft answer and its sources.
+- **Actions:** approve and post, edit, join the call (deep link), or later.
+- **Summary:** decisions and action items after the meeting.
+
 Start as a PWA for the PoC; go native only if push reliability on iOS requires it.

@@ -100,13 +100,13 @@ nav ul li:first-child{color:var(--brand);font-weight:600}
 .notif p{font-size:12.5px;color:#444}
 .tap{position:absolute;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.55);border:2px solid #fff;opacity:0;pointer-events:none;z-index:8;transform:scale(1.4);transition:opacity .2s,transform .3s}
 .tap.on{opacity:1;transform:scale(.8)}
-.app{position:absolute;inset:0;background:#f5f6fd;color:var(--ink);padding:46px 14px 14px;display:flex;flex-direction:column;gap:10px;opacity:0;transform:translateY(20px);transition:.4s;pointer-events:none}
+.app{position:absolute;inset:0;background:#f5f6fd;color:var(--ink);padding:46px 12px 12px;display:flex;flex-direction:column;gap:8px;opacity:0;transform:translateY(20px);transition:.4s;pointer-events:none}
 .app.show{opacity:1;transform:none}
 .app .top{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--muted)}
 .app .top b{color:var(--ink);font-size:15px}
 .live{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:#e24;font-weight:700}
 .live:before{content:"";width:7px;height:7px;border-radius:50%;background:#e24;animation:blink 1.2s infinite}
-.card{background:#fff;border-radius:14px;padding:11px;box-shadow:0 4px 14px -8px rgba(0,0,0,.2);font-size:12.5px}
+.card{background:#fff;border-radius:14px;padding:10px 11px;box-shadow:0 4px 14px -8px rgba(0,0,0,.2);font-size:12.5px}
 .card .lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;margin-bottom:4px}
 .card q{font-style:italic}
 .why{font-size:11.5px;color:var(--muted);margin-top:6px}
@@ -116,12 +116,18 @@ nav ul li:first-child{color:var(--brand);font-weight:600}
 .act.pri{background:var(--brand);color:#fff;border-color:var(--brand)}
 .act.pri svg{color:#fff}
 .act.pressed{transform:scale(.96);filter:brightness(.9)}
+.act.pri{justify-content:center}
 .act small{margin-left:auto;font-weight:500;opacity:.7}
-.compose{display:none;flex-direction:column;gap:7px}
-.compose.show{display:flex}
-.chip{background:#e5e8ff;color:var(--brand);font-size:12px;font-weight:600;padding:8px 10px;border-radius:10px}
-.input{background:#fff;border:1.5px solid var(--brand);border-radius:11px;padding:9px 10px;font-size:12.5px;min-height:38px}
-.input .cur{display:inline-block;width:1px;height:13px;background:var(--ink);vertical-align:middle;animation:blink 1s infinite}
+.draft{background:#fff;border-radius:14px;padding:11px;font-size:12.5px;border:1.5px solid #c9cffc;box-shadow:0 4px 14px -8px rgba(47,63,224,.35)}
+.draft .lbl{display:flex;align-items:center;gap:6px;font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--brand);font-weight:700;margin-bottom:5px}
+.draft .lbl svg{width:13px;height:13px}
+.draft .lbl span{margin-left:auto;color:var(--ok);text-transform:none;letter-spacing:0;font-weight:600}
+.srcs{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.src{display:inline-flex;align-items:center;gap:4px;background:#eef0fb;color:var(--muted);font-size:10.5px;font-weight:600;padding:3px 7px;border-radius:6px;opacity:0;transform:translateY(4px);transition:.35s}
+.src svg{width:11px;height:11px}
+.src.show{opacity:1;transform:none}
+.row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.row .act{flex-direction:column;gap:3px;padding:8px 4px;font-size:11px;justify-content:center}
 .sent{display:none;text-align:center;padding:20px 8px;flex:1;flex-direction:column;align-items:center;justify-content:center;gap:8px}
 .sent.show{display:flex}
 .sent .ck{width:56px;height:56px;border-radius:50%;background:var(--ok);color:#fff;display:flex;align-items:center;justify-content:center;animation:pop .4s}
@@ -130,7 +136,7 @@ nav ul li:first-child{color:var(--brand);font-weight:600}
 .sent b{font-size:15px}.sent p{font-size:12px;color:var(--muted)}
 
 /* steps */
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:30px 0 10px}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin:30px 0 10px}
 @media(max-width:800px){.steps{grid-template-columns:1fr 1fr}}
 .step{background:var(--card);border-radius:18px;padding:18px;border:2px solid transparent;transition:.3s;opacity:.55}
 .step.on{border-color:var(--brand);opacity:1;transform:translateY(-4px);box-shadow:0 14px 28px -18px var(--brand)}
@@ -165,6 +171,11 @@ footer{text-align:center;font-size:12px;color:var(--muted);padding:0 0 30px}
     <symbol id="i-mic" viewBox="0 0 24 24"><path d="M9 3h6v11H9z"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
     <symbol id="i-at" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M16 12v1.5a2.5 2.5 0 0 0 5 0V12a9 9 0 1 0-3.5 7.1"/></symbol>
     <symbol id="i-robot" viewBox="0 0 24 24"><circle cx="12" cy="2.5" r="1"/><path d="M12 3.5V6"/><rect x="4" y="6" width="16" height="13" rx="3"/><path d="M2 11v4M22 11v4"/><circle cx="9" cy="11.5" r="1.5"/><circle cx="15" cy="11.5" r="1.5"/><path d="M9 15.5h6"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></symbol>
+    <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M4 7h16v3a2 2 0 0 0 0 4v3H4v-3a2 2 0 0 0 0-4z"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+    <symbol id="i-mute" viewBox="0 0 24 24"><path d="M9 3h6v8M9 9v5a3 3 0 0 0 5 2"/><path d="M5 11a7 7 0 0 0 11 5.5M19 11a7 7 0 0 1-.5 2.5M12 18v3M3 3l18 18"/></symbol>
   </defs>
 </svg>
 
@@ -175,9 +186,9 @@ footer{text-align:center;font-size:12px;color:var(--muted);padding:0 0 30px}
   </nav>
 
   <section class="hero">
-    <span class="tag">AI meeting stand-in · V1</span>
+    <span class="tag">AI meeting stand-in · Proof of concept</span>
     <h1>Skip the meeting.<br><span>Never miss your moment.</span></h1>
-    <p>Sijainen sits in your meetings for you, listens to the whole discussion, and pings your phone only when someone needs you.</p>
+    <p>Sijainen sits in your meetings for you. When someone needs you, it drafts an answer from your own docs and pings your phone. You approve, it posts.</p>
     <a class="btn" href="#demo">See it in action</a><a class="btn ghost" href="#features">Features</a>
   </section>
 
@@ -208,7 +219,7 @@ footer{text-align:center;font-size:12px;color:var(--muted);padding:0 0 30px}
           <div class="notif" id="notif">
             <div class="h"><svg class="i"><use href="#i-robot"/></svg>SIJAINEN<span>now</span></div>
             <b><svg class="i"><use href="#i-at"/></svg>You were mentioned · Infra Sync</b>
-            <p>Anna asked you to confirm the DB freeze window for Saturday.</p>
+            <p>Anna asked you to confirm the DB freeze window. Draft answer ready for approval.</p>
           </div>
         </div>
         <div class="app" id="app">
@@ -216,21 +227,27 @@ footer{text-align:center;font-size:12px;color:var(--muted);padding:0 0 30px}
           <div class="card">
             <div class="lbl">Needs you</div>
             <q>Mikko, can you confirm the DB freeze window for Saturday?</q>
-            <div class="why">Anna Korhonen · 20 s ago<br>Context: Azure cutover, network side ready.</div>
+            <div class="why">Anna Korhonen · 20 s ago</div>
           </div>
-          <div class="acts" id="acts">
-            <div class="act pri" id="a-reply"><svg class="i"><use href="#i-chat"/></svg>Reply in meeting chat <small>fast</small></div>
-            <div class="act"><svg class="i"><use href="#i-phone"/></svg>Join the call now</div>
-            <div class="act"><svg class="i"><use href="#i-clock"/></svg>"I'll get back today"</div>
-          </div>
-          <div class="compose" id="compose">
-            <div class="chip">Suggested: Confirmed, 02:00–06:00 Sat</div>
-            <div class="input" id="typed"><span class="cur"></span></div>
-            <div class="act pri" id="a-send"><svg class="i"><use href="#i-send"/></svg>Send to chat</div>
+          <div id="review" style="display:flex;flex-direction:column;gap:8px">
+            <div class="draft">
+              <div class="lbl"><svg class="i"><use href="#i-spark"/></svg>Draft answer<span>2 sources</span></div>
+              Confirmed: DB freeze 02:00–06:00 Saturday, as in the cutover plan. Rollback window until 08:00.
+              <div class="srcs">
+                <span class="src"><svg class="i"><use href="#i-doc"/></svg>Cutover plan · Confluence</span>
+                <span class="src"><svg class="i"><use href="#i-ticket"/></svg>INFRA-412 · Jira</span>
+              </div>
+            </div>
+            <div class="act pri" id="a-approve"><svg class="i"><use href="#i-check"/></svg>Approve &amp; post to chat</div>
+            <div class="row">
+              <div class="act"><svg class="i"><use href="#i-edit"/></svg>Edit</div>
+              <div class="act"><svg class="i"><use href="#i-phone"/></svg>Join call</div>
+              <div class="act"><svg class="i"><use href="#i-clock"/></svg>Later</div>
+            </div>
           </div>
           <div class="sent" id="sent">
-            <div class="ck"><svg class="i"><use href="#i-check"/></svg></div><b>Sent to meeting chat</b>
-            <p>Anna confirmed.<br>I'll keep listening and ping you again only if needed.</p>
+            <div class="ck"><svg class="i"><use href="#i-check"/></svg></div><b>Posted to meeting chat</b>
+            <p>Labelled as approved by you.<br>Still listening. You'll only be pinged again if needed.</p>
           </div>
         </div>
         <div class="tap" id="tap"></div>
@@ -241,14 +258,18 @@ footer{text-align:center;font-size:12px;color:var(--muted);padding:0 0 30px}
   <div class="steps">
     <div class="step" id="s1"><div class="n">1</div><h3>Listens</h3><p>Joins the meeting as your stand-in and transcribes live.</p></div>
     <div class="step" id="s2"><div class="n">2</div><h3>Detects</h3><p>Spots your name, your topics, or questions aimed at you.</p></div>
-    <div class="step" id="s3"><div class="n">3</div><h3>Pings you</h3><p>A push notification with the question and its context.</p></div>
-    <div class="step" id="s4"><div class="n">4</div><h3>You act</h3><p>Reply in chat, join in one tap, or defer. The meeting moves on.</p></div>
+    <div class="step" id="s3"><div class="n">3</div><h3>Drafts</h3><p>Looks up your docs, tickets and past meetings and drafts an answer.</p></div>
+    <div class="step" id="s4"><div class="n">4</div><h3>Pings you</h3><p>The question, the draft and its sources, on your phone.</p></div>
+    <div class="step" id="s5"><div class="n">5</div><h3>You approve</h3><p>Post as is, edit, join the call, or defer. Nothing is posted without you.</p></div>
   </div>
   <div class="controls"><button class="btn" id="replay"><svg class="i"><use href="#i-replay"/></svg>Replay demo</button></div>
 
   <section class="feat" id="features">
     <div><div class="ic"><svg class="i"><use href="#i-head"/></svg></div><h3>Transcribes Finnish &amp; English</h3><p>Live transcript with speaker names, including mixed-language discussion.</p></div>
     <div><div class="ic"><svg class="i"><use href="#i-bell"/></svg></div><h3>Pings only when it matters</h3><p>Your name, your projects, direct questions. No noise from the rest.</p></div>
+    <div><div class="ic"><svg class="i"><use href="#i-spark"/></svg></div><h3>Drafts from your own docs</h3><p>Answers come from Confluence, Jira, SharePoint and past meetings, with the sources shown.</p></div>
+    <div><div class="ic"><svg class="i"><use href="#i-shield"/></svg></div><h3>You approve every word</h3><p>Nothing is posted without your tap. If it can't find an answer, it says so and just pings you.</p></div>
+    <div><div class="ic"><svg class="i"><use href="#i-mute"/></svg></div><h3>Text only, never a voice</h3><p>It never speaks in the meeting. Replies go to chat, clearly labelled as coming from your stand-in.</p></div>
     <div><div class="ic"><svg class="i"><use href="#i-doc"/></svg></div><h3>Summary afterwards</h3><p>Decisions and your action items land in your inbox when the meeting ends.</p></div>
   </section>
   <footer>Concept mock-up · Sijainen is a fictional product · Meeting UI is illustrative only</footer>
@@ -273,7 +294,7 @@ function speak(id) {
   if (id) $(id).classList.add('speaking');
 }
 function step(n) {
-  for (let i = 1; i <= 4; i++) $('s' + i).classList.toggle('on', i === n);
+  for (let i = 1; i <= 5; i++) $('s' + i).classList.toggle('on', i === n);
 }
 function tapAt(el) {
   const s = document.querySelector('.screen').getBoundingClientRect();
@@ -284,18 +305,19 @@ function tapAt(el) {
   tap.classList.add('on');
   setTimeout(() => tap.classList.remove('on'), 450);
 }
+const flag = document.querySelector('#t-bot .flag');
 function reset() {
   timers.forEach(clearTimeout); timers = [];
   feed.innerHTML = '';
   speak(null); step(0);
   $('t-bot').classList.remove('alert');
+  flag.textContent = 'Mikko mentioned';
   $('notif').classList.remove('show');
   $('lock').style.opacity = 1;
   $('app').classList.remove('show');
-  $('acts').style.display = 'flex';
-  $('compose').classList.remove('show');
+  $('review').style.display = 'flex';
   $('sent').classList.remove('show');
-  $('typed').innerHTML = '<span class="cur"></span>';
+  document.querySelectorAll('.src').forEach(x => x.classList.remove('show'));
   document.querySelectorAll('.act').forEach(a => a.classList.remove('pressed'));
 }
 
@@ -308,21 +330,23 @@ function run() {
   // 2 Detects
   at(5900, () => { step(2); speak('t-anna'); addMsg('Anna Korhonen', '<em>Mikko</em>, can you confirm the DB freeze window for Saturday?', 'mention'); });
   at(6700, () => $('t-bot').classList.add('alert'));
-  // 3 Pings
-  at(7800, () => { step(3); $('notif').classList.add('show'); });
-  at(9800, () => tapAt($('notif')));
-  at(10200, () => { $('lock').style.opacity = 0; $('app').classList.add('show'); });
-  // 4 You act
-  at(12000, () => { step(4); tapAt($('a-reply')); $('a-reply').classList.add('pressed'); });
-  at(12500, () => { $('acts').style.display = 'none'; $('compose').classList.add('show'); });
-  const txt = 'Confirmed: freeze 02:00–06:00 Saturday.';
-  for (let i = 1; i <= txt.length; i++) at(13000 + i * 45, () => { $('typed').innerHTML = txt.slice(0, i) + '<span class="cur"></span>'; });
-  at(15200, () => { tapAt($('a-send')); $('a-send').classList.add('pressed'); });
-  at(15600, () => { $('compose').classList.remove('show'); $('sent').classList.add('show'); $('t-bot').classList.remove('alert'); speak(null);
-    addMsg('Mikko (via Sijainen)', txt, 'agent', 'chat'); });
-  at(17000, () => { speak('t-anna'); addMsg('Anna Korhonen', 'Perfect, thanks Mikko. Moving on.', '', 'chat'); });
-  at(19000, () => { speak('t-jari'); addMsg('Jari Virtanen', 'Next: monitoring alerts for the new cluster…'); });
-  at(24000, run); // loop
+  // 3 Drafts
+  at(8000, () => { step(3); flag.textContent = 'Drafting answer…'; });
+  // 4 Pings
+  at(9600, () => { step(4); flag.textContent = 'Waiting for Mikko'; $('notif').classList.add('show'); });
+  at(11600, () => tapAt($('notif')));
+  at(12000, () => { $('lock').style.opacity = 0; $('app').classList.add('show'); });
+  document.querySelectorAll('.src').forEach((x, i) => at(12600 + i * 350, () => x.classList.add('show')));
+  // 5 You approve
+  at(14800, () => { step(5); tapAt($('a-approve')); $('a-approve').classList.add('pressed'); });
+  at(15300, () => {
+    $('review').style.display = 'none'; $('sent').classList.add('show');
+    $('t-bot').classList.remove('alert'); speak(null);
+    addMsg('Mikko (via Sijainen, approved)', 'Confirmed: DB freeze 02:00–06:00 Saturday, as in the cutover plan. Rollback window until 08:00.', 'agent', 'chat');
+  });
+  at(16900, () => { speak('t-anna'); addMsg('Anna Korhonen', 'Perfect, thanks Mikko. Moving on.', '', 'chat'); });
+  at(18900, () => { speak('t-jari'); addMsg('Jari Virtanen', 'Next: monitoring alerts for the new cluster…'); });
+  at(24500, run); // loop
 }
 $('replay').onclick = run;
 run();
