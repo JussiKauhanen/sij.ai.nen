@@ -27,8 +27,7 @@ svg.i{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke
 /* nav */
 nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0}
 .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px}
-.logo i{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--brand),#ff5c7a);display:block;position:relative}
-.logo i:after{content:"";position:absolute;inset:9px;border-radius:50%;background:#fff}
+.logo svg{width:30px;height:30px;color:var(--brand);stroke-width:1.8}
 nav ul{display:flex;gap:28px;list-style:none;font-size:14px;color:var(--muted)}
 nav ul li:first-child{color:var(--brand);font-weight:600}
 @media(max-width:700px){nav ul{display:none}}
@@ -94,7 +93,7 @@ nav ul li:first-child{color:var(--brand);font-weight:600}
 .notif{position:absolute;left:12px;right:12px;top:180px;background:rgba(255,255,255,.95);border-radius:18px;padding:12px;color:var(--ink);text-align:left;transform:translateY(-30px) scale(.95);opacity:0;transition:.45s cubic-bezier(.2,1.4,.4,1)}
 .notif.show{transform:none;opacity:1}
 .notif .h{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--muted)}
-.notif .h i{width:18px;height:18px;border-radius:5px;background:linear-gradient(135deg,var(--brand),#ff5c7a)}
+.notif .h svg{width:16px;height:16px;color:var(--brand)}
 .notif .h span{margin-left:auto}
 .notif b{display:flex;align-items:center;gap:6px;font-size:13.5px;margin:6px 0 2px}
 .notif b svg{color:var(--warn)}
@@ -165,12 +164,13 @@ footer{text-align:center;font-size:12px;color:var(--muted);padding:0 0 30px}
     <symbol id="i-replay" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></symbol>
     <symbol id="i-mic" viewBox="0 0 24 24"><path d="M9 3h6v11H9z"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
     <symbol id="i-at" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M16 12v1.5a2.5 2.5 0 0 0 5 0V12a9 9 0 1 0-3.5 7.1"/></symbol>
+    <symbol id="i-robot" viewBox="0 0 24 24"><circle cx="12" cy="2.5" r="1"/><path d="M12 3.5V6"/><rect x="4" y="6" width="16" height="13" rx="3"/><path d="M2 11v4M22 11v4"/><circle cx="9" cy="11.5" r="1.5"/><circle cx="15" cy="11.5" r="1.5"/><path d="M9 15.5h6"/></symbol>
   </defs>
 </svg>
 
 <div class="wrap">
   <nav>
-    <div class="logo"><i></i>Sijainen</div>
+    <div class="logo"><svg class="i"><use href="#i-robot"/></svg>Sijainen</div>
     <ul><li>Home</li><li>How it works</li><li>Pricing</li><li>Contact</li></ul>
   </nav>
 
@@ -190,7 +190,7 @@ footer{text-align:center;font-size:12px;color:var(--muted);padding:0 0 30px}
           <div class="tile" id="t-anna"><div class="av" style="background:#e0567a">AK</div><span class="nm">Anna Korhonen</span></div>
           <div class="tile" id="t-jari"><div class="av" style="background:#2ba58f">JV</div><span class="nm">Jari Virtanen</span></div>
           <div class="tile" id="t-liisa"><div class="av" style="background:#e5a13a">LN</div><span class="nm">Liisa Nieminen</span></div>
-          <div class="tile bot" id="t-bot"><div class="av"><svg class="i"><use href="#i-mic"/></svg></div><span class="flag">Mikko mentioned</span><span class="nm">Sijainen (for Mikko)</span></div>
+          <div class="tile bot" id="t-bot"><div class="av"><svg class="i"><use href="#i-robot"/></svg></div><span class="flag">Mikko mentioned</span><span class="nm">Sijainen (for Mikko)</span></div>
         </div>
         <div class="side">
           <div class="tabs"><span class="on">Live transcript + chat</span><span>People (4)</span></div>
@@ -206,7 +206,7 @@ footer{text-align:center;font-size:12px;color:var(--muted);padding:0 0 30px}
         <div class="lock" id="lock">
           <div class="time">12:58</div><div class="date">Friday, 25 September</div>
           <div class="notif" id="notif">
-            <div class="h"><i></i>SIJAINEN<span>now</span></div>
+            <div class="h"><svg class="i"><use href="#i-robot"/></svg>SIJAINEN<span>now</span></div>
             <b><svg class="i"><use href="#i-at"/></svg>You were mentioned · Infra Sync</b>
             <p>Anna asked you to confirm the DB freeze window for Saturday.</p>
           </div>
