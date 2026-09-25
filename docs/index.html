@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sijainen – Meeting Stand-in</title>
+<meta name="description" content="Sijainen sits in your Teams meetings for you and pings your phone only when someone needs you.">
+<meta property="og:title" content="Sijainen – Meeting Stand-in">
+<meta property="og:description" content="Skip the meeting. Never miss your moment.">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#eef0fb; --ink:#1b1f3b; --muted:#6b7090; --brand:#2f3fe0; --brand2:#5b6bff;
+  --card:#ffffff; --line:#e3e6f5; --meet:#4b4fa8; --meetDark:#292b52; --hl:#fff3c4;
+  --ok:#17a672; --warn:#ff8a3d;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+svg.i{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;vertical-align:middle}
+
+/* nav */
+nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px}
+.logo i{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--brand),#ff5c7a);display:block;position:relative}
+.logo i:after{content:"";position:absolute;inset:9px;border-radius:50%;background:#fff}
+nav ul{display:flex;gap:28px;list-style:none;font-size:14px;color:var(--muted)}
+nav ul li:first-child{color:var(--brand);font-weight:600}
+@media(max-width:700px){nav ul{display:none}}
+
+/* hero */
+.hero{text-align:center;padding:30px 0 34px}
+.hero .tag{display:inline-block;background:#dfe3ff;color:var(--brand);font-weight:600;font-size:13px;padding:6px 14px;border-radius:99px;margin-bottom:18px}
+.hero h1{font-size:clamp(32px,5vw,54px);line-height:1.08;font-weight:800;letter-spacing:-.02em}
+.hero h1 span{color:var(--brand)}
+.hero p{max-width:620px;margin:16px auto 26px;color:var(--muted);font-size:17px}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--brand);color:#fff;font:700 14px Inter,sans-serif;padding:13px 26px;border-radius:99px;box-shadow:0 8px 20px -8px var(--brand);border:0;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--brand);box-shadow:none;border:2px solid var(--brand);margin-left:8px}
+
+/* stage */
+.stage{display:grid;grid-template-columns:1fr 300px;gap:40px;align-items:center;background:var(--card);border-radius:28px;padding:34px;box-shadow:0 30px 60px -30px rgba(40,50,140,.35)}
+@media(max-width:900px){.stage{grid-template-columns:1fr;padding:18px;gap:28px}}
+
+/* desktop meeting window */
+.win{border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#f6f7fc;box-shadow:0 12px 30px -16px rgba(0,0,0,.25);min-width:0}
+.bar{background:var(--meetDark);color:#cfd1f5;font-size:12px;display:flex;align-items:center;gap:8px;padding:8px 12px}
+.bar b{width:10px;height:10px;border-radius:50%;background:#ff5f57;display:inline-block}
+.bar b:nth-child(2){background:#febc2e}.bar b:nth-child(3){background:#28c840}
+.bar .t{margin-left:10px;font-weight:600;color:#fff}
+.bar .rec{margin-left:auto;display:flex;align-items:center;gap:6px}
+.bar .rec:before{content:"";width:8px;height:8px;border-radius:50%;background:#ff4d4d;animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.2}}
+.meet{display:grid;grid-template-columns:1.25fr 1fr;height:390px}
+@media(max-width:600px){.meet{grid-template-columns:1fr;height:auto}}
+.tiles{background:#1f2044;display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:8px}
+.tile{background:#34366b;border-radius:8px;position:relative;display:flex;align-items:center;justify-content:center;min-height:86px;transition:box-shadow .3s}
+.tile .av{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:16px}
+.tile .nm{position:absolute;left:8px;bottom:6px;font-size:11px;color:#e6e7ff}
+.tile.speaking{box-shadow:0 0 0 3px #8f95ff inset}
+.tile.bot{background:linear-gradient(135deg,#2f3fe0,#7a45d9)}
+.tile.bot .av{background:#fff;color:var(--brand)}
+.tile.bot .av svg{width:22px;height:22px}
+.tile.bot .flag{position:absolute;top:6px;right:6px;background:var(--warn);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;opacity:0;transform:scale(.6);transition:.3s}
+.tile.bot.alert .flag{opacity:1;transform:scale(1)}
+.tile.bot.alert{animation:pulse 1s ease 2}
+@keyframes pulse{50%{box-shadow:0 0 0 6px rgba(255,138,61,.7) inset}}
+.side{display:flex;flex-direction:column;background:#fff;border-left:1px solid var(--line);min-height:0}
+.tabs{display:flex;font-size:12px;border-bottom:1px solid var(--line)}
+.tabs span{flex:1;text-align:center;padding:8px;color:var(--muted)}
+.tabs span.on{color:var(--meet);font-weight:700;box-shadow:0 -2px 0 var(--meet) inset}
+.feed{flex:1;overflow:hidden;padding:10px;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;font-size:12.5px}
+@media(max-width:600px){.feed{height:230px}}
+.msg{opacity:0;transform:translateY(8px);transition:.4s;padding:7px 9px;border-radius:8px;background:#f3f4fb}
+.msg.show{opacity:1;transform:none}
+.msg .who{font-weight:700;font-size:11px;color:var(--meet)}
+.msg.mention{background:var(--hl);border-left:3px solid var(--warn)}
+.msg.mention em{font-style:normal;background:#ffd66b;border-radius:4px;padding:0 3px;font-weight:700}
+.msg.agent{background:#e5e8ff;border-left:3px solid var(--brand)}
+.msg.agent .who{color:var(--brand)}
+.msg .kind{float:right;font-size:10px;color:var(--muted)}
+
+/* phone */
+.phone{width:270px;height:540px;margin:0 auto;border-radius:40px;background:#111;padding:10px;position:relative;box-shadow:0 30px 50px -20px rgba(20,20,60,.5)}
+.screen{width:100%;height:100%;border-radius:31px;overflow:hidden;position:relative;background:linear-gradient(160deg,#5b6bff,#2f3fe0 55%,#1b1f6b)}
+.notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:90px;height:24px;border-radius:14px;background:#111;z-index:9}
+.lock{position:absolute;inset:0;color:#fff;text-align:center;padding-top:70px;transition:opacity .4s}
+.lock .time{font-size:54px;font-weight:300;letter-spacing:-1px}
+.lock .date{font-size:13px;opacity:.8}
+.notif{position:absolute;left:12px;right:12px;top:180px;background:rgba(255,255,255,.95);border-radius:18px;padding:12px;color:var(--ink);text-align:left;transform:translateY(-30px) scale(.95);opacity:0;transition:.45s cubic-bezier(.2,1.4,.4,1)}
+.notif.show{transform:none;opacity:1}
+.notif .h{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--muted)}
+.notif .h i{width:18px;height:18px;border-radius:5px;background:linear-gradient(135deg,var(--brand),#ff5c7a)}
+.notif .h span{margin-left:auto}
+.notif b{display:flex;align-items:center;gap:6px;font-size:13.5px;margin:6px 0 2px}
+.notif b svg{color:var(--warn)}
+.notif p{font-size:12.5px;color:#444}
+.tap{position:absolute;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.55);border:2px solid #fff;opacity:0;pointer-events:none;z-index:8;transform:scale(1.4);transition:opacity .2s,transform .3s}
+.tap.on{opacity:1;transform:scale(.8)}
+.app{position:absolute;inset:0;background:#f5f6fd;color:var(--ink);padding:46px 14px 14px;display:flex;flex-direction:column;gap:10px;opacity:0;transform:translateY(20px);transition:.4s;pointer-events:none}
+.app.show{opacity:1;transform:none}
+.app .top{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--muted)}
+.app .top b{color:var(--ink);font-size:15px}
+.live{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:#e24;font-weight:700}
+.live:before{content:"";width:7px;height:7px;border-radius:50%;background:#e24;animation:blink 1.2s infinite}
+.card{background:#fff;border-radius:14px;padding:11px;box-shadow:0 4px 14px -8px rgba(0,0,0,.2);font-size:12.5px}
+.card .lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;margin-bottom:4px}
+.card q{font-style:italic}
+.why{font-size:11.5px;color:var(--muted);margin-top:6px}
+.acts{display:flex;flex-direction:column;gap:7px}
+.act{border-radius:11px;padding:10px 12px;font-size:12.5px;font-weight:600;background:#fff;border:1.5px solid var(--line);display:flex;align-items:center;gap:8px;transition:.25s}
+.act svg{color:var(--brand)}
+.act.pri{background:var(--brand);color:#fff;border-color:var(--brand)}
+.act.pri svg{color:#fff}
+.act.pressed{transform:scale(.96);filter:brightness(.9)}
+.act small{margin-left:auto;font-weight:500;opacity:.7}
+.compose{display:none;flex-direction:column;gap:7px}
+.compose.show{display:flex}
+.chip{background:#e5e8ff;color:var(--brand);font-size:12px;font-weight:600;padding:8px 10px;border-radius:10px}
+.input{background:#fff;border:1.5px solid var(--brand);border-radius:11px;padding:9px 10px;font-size:12.5px;min-height:38px}
+.input .cur{display:inline-block;width:1px;height:13px;background:var(--ink);vertical-align:middle;animation:blink 1s infinite}
+.sent{display:none;text-align:center;padding:20px 8px;flex:1;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+.sent.show{display:flex}
+.sent .ck{width:56px;height:56px;border-radius:50%;background:var(--ok);color:#fff;display:flex;align-items:center;justify-content:center;animation:pop .4s}
+.sent .ck svg{width:28px;height:28px;stroke-width:2.6}
+@keyframes pop{0%{transform:scale(.3)}70%{transform:scale(1.15)}}
+.sent b{font-size:15px}.sent p{font-size:12px;color:var(--muted)}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:30px 0 10px}
+@media(max-width:800px){.steps{grid-template-columns:1fr 1fr}}
+.step{background:var(--card);border-radius:18px;padding:18px;border:2px solid transparent;transition:.3s;opacity:.55}
+.step.on{border-color:var(--brand);opacity:1;transform:translateY(-4px);box-shadow:0 14px 28px -18px var(--brand)}
+.step .n{width:30px;height:30px;border-radius:50%;background:#dfe3ff;color:var(--brand);font-weight:800;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.step.on .n{background:var(--brand);color:#fff}
+.step h3{font-size:15px}.step p{font-size:13px;color:var(--muted)}
+.controls{text-align:center;margin:18px 0 60px}
+
+/* features */
+.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:60px}
+@media(max-width:800px){.feat{grid-template-columns:1fr}}
+.feat div{background:var(--card);border-radius:18px;padding:22px}
+.feat .ic{width:40px;height:40px;border-radius:12px;background:#dfe3ff;color:var(--brand);display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.feat .ic svg{width:20px;height:20px}
+.feat h3{font-size:16px;margin-bottom:6px}.feat p{font-size:14px;color:var(--muted)}
+footer{text-align:center;font-size:12px;color:var(--muted);padding:0 0 30px}
+</style>
+</head>
+<body>
+<!-- icon sprites -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></symbol>
+    <symbol id="i-head" viewBox="0 0 24 24"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><path d="M4 14h3v6H4zM17 14h3v6h-3z"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21a2 2 0 0 0 4 0"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M9 12h7M9 16h7"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M4 12l16-8-6 16-2-6z"/></symbol>
+    <symbol id="i-replay" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><path d="M9 3h6v11H9z"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+    <symbol id="i-at" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M16 12v1.5a2.5 2.5 0 0 0 5 0V12a9 9 0 1 0-3.5 7.1"/></symbol>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <nav>
+    <div class="logo"><i></i>Sijainen</div>
+    <ul><li>Home</li><li>How it works</li><li>Pricing</li><li>Contact</li></ul>
+  </nav>
+
+  <section class="hero">
+    <span class="tag">AI meeting stand-in · V1</span>
+    <h1>Skip the meeting.<br><span>Never miss your moment.</span></h1>
+    <p>Sijainen sits in your meetings for you, listens to the whole discussion, and pings your phone only when someone needs you.</p>
+    <a class="btn" href="#demo">See it in action</a><a class="btn ghost" href="#features">Features</a>
+  </section>
+
+  <section class="stage" id="demo">
+    <!-- Desktop meeting -->
+    <div class="win">
+      <div class="bar"><b></b><b></b><b></b><span class="t">Weekly Infra Sync</span><span class="rec">Transcribing · 23:41</span></div>
+      <div class="meet">
+        <div class="tiles">
+          <div class="tile" id="t-anna"><div class="av" style="background:#e0567a">AK</div><span class="nm">Anna Korhonen</span></div>
+          <div class="tile" id="t-jari"><div class="av" style="background:#2ba58f">JV</div><span class="nm">Jari Virtanen</span></div>
+          <div class="tile" id="t-liisa"><div class="av" style="background:#e5a13a">LN</div><span class="nm">Liisa Nieminen</span></div>
+          <div class="tile bot" id="t-bot"><div class="av"><svg class="i"><use href="#i-mic"/></svg></div><span class="flag">Mikko mentioned</span><span class="nm">Sijainen (for Mikko)</span></div>
+        </div>
+        <div class="side">
+          <div class="tabs"><span class="on">Live transcript + chat</span><span>People (4)</span></div>
+          <div class="feed" id="feed"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phone -->
+    <div class="phone">
+      <div class="screen">
+        <div class="notch"></div>
+        <div class="lock" id="lock">
+          <div class="time">12:58</div><div class="date">Friday, 25 September</div>
+          <div class="notif" id="notif">
+            <div class="h"><i></i>SIJAINEN<span>now</span></div>
+            <b><svg class="i"><use href="#i-at"/></svg>You were mentioned · Infra Sync</b>
+            <p>Anna asked you to confirm the DB freeze window for Saturday.</p>
+          </div>
+        </div>
+        <div class="app" id="app">
+          <div class="top"><b>Weekly Infra Sync</b><span class="live">LIVE</span></div>
+          <div class="card">
+            <div class="lbl">Needs you</div>
+            <q>Mikko, can you confirm the DB freeze window for Saturday?</q>
+            <div class="why">Anna Korhonen · 20 s ago<br>Context: Azure cutover, network side ready.</div>
+          </div>
+          <div class="acts" id="acts">
+            <div class="act pri" id="a-reply"><svg class="i"><use href="#i-chat"/></svg>Reply in meeting chat <small>fast</small></div>
+            <div class="act"><svg class="i"><use href="#i-phone"/></svg>Join the call now</div>
+            <div class="act"><svg class="i"><use href="#i-clock"/></svg>"I'll get back today"</div>
+          </div>
+          <div class="compose" id="compose">
+            <div class="chip">Suggested: Confirmed, 02:00–06:00 Sat</div>
+            <div class="input" id="typed"><span class="cur"></span></div>
+            <div class="act pri" id="a-send"><svg class="i"><use href="#i-send"/></svg>Send to chat</div>
+          </div>
+          <div class="sent" id="sent">
+            <div class="ck"><svg class="i"><use href="#i-check"/></svg></div><b>Sent to meeting chat</b>
+            <p>Anna confirmed.<br>I'll keep listening and ping you again only if needed.</p>
+          </div>
+        </div>
+        <div class="tap" id="tap"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="steps">
+    <div class="step" id="s1"><div class="n">1</div><h3>Listens</h3><p>Joins the meeting as your stand-in and transcribes live.</p></div>
+    <div class="step" id="s2"><div class="n">2</div><h3>Detects</h3><p>Spots your name, your topics, or questions aimed at you.</p></div>
+    <div class="step" id="s3"><div class="n">3</div><h3>Pings you</h3><p>A push notification with the question and its context.</p></div>
+    <div class="step" id="s4"><div class="n">4</div><h3>You act</h3><p>Reply in chat, join in one tap, or defer. The meeting moves on.</p></div>
+  </div>
+  <div class="controls"><button class="btn" id="replay"><svg class="i"><use href="#i-replay"/></svg>Replay demo</button></div>
+
+  <section class="feat" id="features">
+    <div><div class="ic"><svg class="i"><use href="#i-head"/></svg></div><h3>Transcribes Finnish &amp; English</h3><p>Live transcript with speaker names, including mixed-language discussion.</p></div>
+    <div><div class="ic"><svg class="i"><use href="#i-bell"/></svg></div><h3>Pings only when it matters</h3><p>Your name, your projects, direct questions. No noise from the rest.</p></div>
+    <div><div class="ic"><svg class="i"><use href="#i-doc"/></svg></div><h3>Summary afterwards</h3><p>Decisions and your action items land in your inbox when the meeting ends.</p></div>
+  </section>
+  <footer>Concept mock-up · Sijainen is a fictional product · Meeting UI is illustrative only</footer>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const feed = $('feed');
+let timers = [];
+const at = (ms, fn) => timers.push(setTimeout(fn, ms));
+
+function addMsg(who, html, cls = '', kind = 'transcript') {
+  const d = document.createElement('div');
+  d.className = 'msg ' + cls;
+  d.innerHTML = `<span class="kind">${kind}</span><div class="who">${who}</div>${html}`;
+  feed.appendChild(d);
+  requestAnimationFrame(() => requestAnimationFrame(() => d.classList.add('show')));
+  while (feed.children.length > 6) feed.removeChild(feed.firstChild);
+}
+function speak(id) {
+  document.querySelectorAll('.tile').forEach(t => t.classList.remove('speaking'));
+  if (id) $(id).classList.add('speaking');
+}
+function step(n) {
+  for (let i = 1; i <= 4; i++) $('s' + i).classList.toggle('on', i === n);
+}
+function tapAt(el) {
+  const s = document.querySelector('.screen').getBoundingClientRect();
+  const r = el.getBoundingClientRect();
+  const tap = $('tap');
+  tap.style.left = (r.left - s.left + r.width / 2 - 22) + 'px';
+  tap.style.top = (r.top - s.top + r.height / 2 - 22) + 'px';
+  tap.classList.add('on');
+  setTimeout(() => tap.classList.remove('on'), 450);
+}
+function reset() {
+  timers.forEach(clearTimeout); timers = [];
+  feed.innerHTML = '';
+  speak(null); step(0);
+  $('t-bot').classList.remove('alert');
+  $('notif').classList.remove('show');
+  $('lock').style.opacity = 1;
+  $('app').classList.remove('show');
+  $('acts').style.display = 'flex';
+  $('compose').classList.remove('show');
+  $('sent').classList.remove('show');
+  $('typed').innerHTML = '<span class="cur"></span>';
+  document.querySelectorAll('.act').forEach(a => a.classList.remove('pressed'));
+}
+
+function run() {
+  reset();
+  // 1 Listens
+  at(300, () => { step(1); speak('t-anna'); addMsg('Anna Korhonen', 'Okay, next item: the Azure migration cutover this weekend.'); });
+  at(2200, () => { speak('t-jari'); addMsg('Jari Virtanen', 'Network side is ready, firewall rules are staged.'); });
+  at(4000, () => { speak('t-liisa'); addMsg('Liisa Nieminen', 'Backups verified last night, all green.'); });
+  // 2 Detects
+  at(5900, () => { step(2); speak('t-anna'); addMsg('Anna Korhonen', '<em>Mikko</em>, can you confirm the DB freeze window for Saturday?', 'mention'); });
+  at(6700, () => $('t-bot').classList.add('alert'));
+  // 3 Pings
+  at(7800, () => { step(3); $('notif').classList.add('show'); });
+  at(9800, () => tapAt($('notif')));
+  at(10200, () => { $('lock').style.opacity = 0; $('app').classList.add('show'); });
+  // 4 You act
+  at(12000, () => { step(4); tapAt($('a-reply')); $('a-reply').classList.add('pressed'); });
+  at(12500, () => { $('acts').style.display = 'none'; $('compose').classList.add('show'); });
+  const txt = 'Confirmed: freeze 02:00–06:00 Saturday.';
+  for (let i = 1; i <= txt.length; i++) at(13000 + i * 45, () => { $('typed').innerHTML = txt.slice(0, i) + '<span class="cur"></span>'; });
+  at(15200, () => { tapAt($('a-send')); $('a-send').classList.add('pressed'); });
+  at(15600, () => { $('compose').classList.remove('show'); $('sent').classList.add('show'); $('t-bot').classList.remove('alert'); speak(null);
+    addMsg('Mikko (via Sijainen)', txt, 'agent', 'chat'); });
+  at(17000, () => { speak('t-anna'); addMsg('Anna Korhonen', 'Perfect, thanks Mikko. Moving on.', '', 'chat'); });
+  at(19000, () => { speak('t-jari'); addMsg('Jari Virtanen', 'Next: monitoring alerts for the new cluster…'); });
+  at(24000, run); // loop
+}
+$('replay').onclick = run;
+run();
+</script>
+</body>
+</html>
